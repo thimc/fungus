@@ -43,8 +43,7 @@ reflective, esoteric programming language.
 
 	./fungus <file.bf>
 
-_NOTE: If no arguments are passed to fungus, it will read from
-standard input._
+_NOTE: fungus will read from standard input if no arguments are passed_
 
 ## License
 
