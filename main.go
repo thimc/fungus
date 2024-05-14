@@ -11,7 +11,7 @@ const randomDirection = "><^V"
 
 type Fungus struct {
 	width, height int
-	matrix        [][]byte
+	Matrix        [][]byte
 	x, y          int
 	dx, dy        int
 	stack         []int
@@ -22,13 +22,13 @@ func NewFungus(w, h, sz int) *Fungus {
 	f := &Fungus{
 		width:  w,
 		height: h,
-		matrix: make([][]byte, h),
+		Matrix: make([][]byte, h),
 		stack:  make([]int, sz),
 	}
-	for i := range f.matrix {
-		f.matrix[i] = make([]byte, w)
-		for j := range f.matrix[i] {
-			f.matrix[i][j] = ' '
+	for i := range f.Matrix {
+		f.Matrix[i] = make([]byte, w)
+		for j := range f.Matrix[i] {
+			f.Matrix[i][j] = ' '
 		}
 	}
 	f.dx = 1
@@ -54,8 +54,8 @@ func (f *Fungus) move() {
 	f.y = (f.y + f.dy + f.height) % f.height
 }
 
-func (f *Fungus) run() {
-	ch := f.matrix[f.y][f.x]
+func (f *Fungus) Run() {
+	ch := f.Matrix[f.y][f.x]
 
 	// String mode
 	if ch == '"' {
@@ -63,7 +63,7 @@ func (f *Fungus) run() {
 	} else if f.str {
 		f.push(int(ch))
 		f.move()
-		f.run()
+		f.Run()
 		return
 	}
 
@@ -151,12 +151,12 @@ func (f *Fungus) run() {
 	case 'g': // Get call
 		y := f.pop()
 		x := f.pop()
-		f.push(int(f.matrix[y][x]))
+		f.push(int(f.Matrix[y][x]))
 	case 'p': // Put call
 		y := f.pop()
 		x := f.pop()
 		z := f.pop()
-		f.matrix[y][x] = byte(int(z))
+		f.Matrix[y][x] = byte(int(z))
 	case '&': // Get integer input
 		x := 0
 		fmt.Scanf("%d", &x)
@@ -168,7 +168,7 @@ func (f *Fungus) run() {
 	case '?': // Random direction
 		ch = randomDirection[rand.Intn(len(randomDirection))]
 		f.move()
-		f.run()
+		f.Run()
 		return
 	case '@': // Exit
 		return
@@ -179,7 +179,7 @@ func (f *Fungus) run() {
 	}
 
 	f.move()
-	f.run()
+	f.Run()
 }
 
 func main() {
@@ -203,7 +203,7 @@ func main() {
 		for i := 0; i < len(line); i++ {
 			ch := byte(line[i])
 			if ch != '\n' {
-				fungus.matrix[y][i] = ch
+				fungus.Matrix[y][i] = ch
 			}
 		}
 		y++
@@ -213,5 +213,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	fungus.run()
+	fungus.Run()
 }
